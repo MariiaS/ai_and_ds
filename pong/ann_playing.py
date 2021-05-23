@@ -33,24 +33,22 @@ def write_next_state(game_env, action, obs_now):
     
 env = gym.make('Pong-v4')
 env.reset()
-env.render()
+#env.render()
 # get initial values for the state of the game and the image data to give our model
 obs, _, _, _ = env.step(env.action_space.sample())
 obs = write_next_state(env, env.action_space.sample(), obs)
-
-while True:
-    env.render()
+if __name__ == '__main__':
+    while True:
+        env.render()
     # loading the current state to give it to our model
-    img = keras.preprocessing.image.load_img("current_state.png", target_size=(40, 68), color_mode="grayscale")
-    img_array = keras.preprocessing.image.img_to_array(img)
-    img_array = tf.expand_dims(img_array, 0) #adding the batch dimension because we have to
-    # the scores of each moves in the current state according to our model
-    pred = model.predict(img_array)[0]
-    #print(pred) #if you want to see the three scores
-    action = move_ids[np.argmax(pred)] #the actual action to be taken, the one of max score
+        img = keras.preprocessing.image.load_img("current_state.png", target_size=(40, 68), color_mode="grayscale")
+        img_array = keras.preprocessing.image.img_to_array(img)
+        img_array = tf.expand_dims(img_array, 0) #adding the batch dimension because we have to
+        # the scores of each moves in the current state according to our model
+        pred = model.predict(img_array)[0]
+        #print(pred) #if you want to see the three scores
+        action = move_ids[np.argmax(pred)] #the actual action to be taken, the one of max score
 
-    #make the move, update the current_state.png
-    obs = write_next_state(env, action, obs)
-
-
-env.close()
+        #make the move, update the current_state.png
+        obs = write_next_state(env, action, obs)
+    env.close()

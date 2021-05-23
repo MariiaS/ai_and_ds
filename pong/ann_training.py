@@ -7,7 +7,6 @@ you can just run this file and it will train the agent on this data.
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
-from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
@@ -41,7 +40,7 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
   batch_size=batch_size)
 
 # This snippet of code is only there to make the learning faster by caching the datasets
-AUTOTUNE = tf.data.AUTOTUNE
+AUTOTUNE = tf.data.experimental.AUTOTUNE
 train_ds = train_ds.cache().shuffle(10000).prefetch(buffer_size=AUTOTUNE)
 val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
@@ -83,9 +82,9 @@ history = model.fit(
   validation_data=val_ds,
   epochs=epochs
 )
-
-# save the trained model for later use
-model.save("trained_agent")
+if __name__ == '__main__':
+    print("Hit ESC key to quit.") # save the trained model for later use
+    model.save("trained_agent")
 
 
 #################################### Plotting Training Results ########################################
